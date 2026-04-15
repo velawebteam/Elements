@@ -1,13 +1,15 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import Lenis from 'lenis';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [lang, setLang] = useState<'EN' | 'PT'>('EN');
+  const { lang, setLang, t } = useLanguage();
   const location = useLocation();
+  const lenisRef = useRef<Lenis | null>(null);
 
   // Initialize Lenis for smooth scrolling
   useEffect(() => {
@@ -22,6 +24,8 @@ export default function Layout() {
       infinite: false,
     });
 
+    lenisRef.current = lenis;
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -31,21 +35,26 @@ export default function Layout() {
 
     return () => {
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
-  // Close menu on route change
+  // Reset scroll on route change
   useEffect(() => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+    window.scrollTo(0, 0);
     setIsMenuOpen(false);
   }, [location.pathname]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Projects', path: '/projects' },
-    { name: 'Galerie', path: '/galerie' },
-    { name: 'Contact', path: '/contact' },
+    { name: t('nav.home'), path: '/' },
+    { name: t('nav.projects'), path: '/projects' },
+    { name: t('nav.galerie'), path: '/galerie' },
+    { name: t('nav.contact'), path: '/contact' },
   ];
 
   return (
@@ -103,7 +112,7 @@ export default function Layout() {
               transition={{ delay: 0.8 }}
               className="absolute bottom-12 text-sm tracking-widest uppercase opacity-50"
             >
-              Human Performance Environments
+              {t('home.hero.tagline')}
             </motion.div>
           </motion.div>
         )}
@@ -120,13 +129,13 @@ export default function Layout() {
           <div>
             <h2 className="font-serif text-3xl mb-6 uppercase tracking-widest">Elements</h2>
             <p className="text-sm opacity-70 max-w-sm leading-relaxed">
-              Residences engineered for longevity, health, and measurable performance. Where others decorate, we design.
+              {t('footer.desc')}
             </p>
           </div>
           <div className="flex flex-col md:items-end gap-4 text-sm tracking-widest uppercase">
-            <Link to="/projects" className="hover:text-gold transition-colors">Projects</Link>
-            <Link to="/galerie" className="hover:text-gold transition-colors">Galerie</Link>
-            <Link to="/contact" className="hover:text-gold transition-colors">Contact</Link>
+            <Link to="/projects" className="hover:text-gold transition-colors">{t('nav.projects')}</Link>
+            <Link to="/galerie" className="hover:text-gold transition-colors">{t('nav.galerie')}</Link>
+            <Link to="/contact" className="hover:text-gold transition-colors">{t('nav.contact')}</Link>
             <a href="https://wa.me/1234567890" target="_blank" rel="noreferrer" className="hover:text-gold transition-colors mt-4">
               WhatsApp
             </a>
@@ -134,7 +143,7 @@ export default function Layout() {
         </div>
         <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 text-xs opacity-50 flex justify-between uppercase tracking-widest">
           <span>© {new Date().getFullYear()} Elements</span>
-          <span>Algarve, Portugal</span>
+          <span>{t('footer.location')}</span>
         </div>
       </footer>
     </div>

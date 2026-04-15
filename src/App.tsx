@@ -11,20 +11,23 @@ import ProjectDetail from './pages/ProjectDetail';
 import Galerie from './pages/Galerie';
 import Contact from './pages/Contact';
 import ScrollToTop from './components/ScrollToTop';
+import { LanguageProvider } from './context/LanguageContext';
 
 export default function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="projects" element={<Projects />} />
-          <Route path="projects/:id" element={<ProjectDetail />} />
-          <Route path="galerie" element={<Galerie />} />
-          <Route path="contact" element={<Contact />} />
-        </Route>
-      </Routes>
-    </Router>
+    <LanguageProvider>
+      <Router>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="projects/:id" element={<ProjectDetail />} />
+            <Route path="galerie" element={<Galerie />} />
+            <Route path="contact" element={<Contact />} />
+          </Route>
+        </Routes>
+      </Router>
+    </LanguageProvider>
   );
 }

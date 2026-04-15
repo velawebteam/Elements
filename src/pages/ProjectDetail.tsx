@@ -24,8 +24,10 @@ import {
   Users 
 } from 'lucide-react';
 import { properties } from '../data/properties';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function ProjectDetail() {
+  const { t } = useLanguage();
   const { id } = useParams();
   const property = properties.find(p => p.id === id);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,6 +38,15 @@ export default function ProjectDetail() {
     target: containerRef,
   });
 
+  // Scroll to top on mount and when ID changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Force immediate scroll to top for Lenis if present
+    if (window.scrollTo) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    }
+  }, [id]);
+
   // Calculate the exact distance to scroll horizontally and set container height
   useEffect(() => {
     const updateDimensions = () => {
@@ -43,17 +54,15 @@ export default function ProjectDetail() {
         const width = contentRef.current.scrollWidth;
         const viewportWidth = window.innerWidth;
         setXRange(width - viewportWidth);
-        
-        // Set container height to match content width for a 1:1 scroll feel
-        // We add a bit of extra height if needed, but 1:1 is usually best for "natural" feel
         setContainerHeight(`${width}px`);
       }
     };
     
     updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-    const timer = setTimeout(updateDimensions, 500);
+    // Second pass after a short delay to ensure all images/content are loaded
+    const timer = setTimeout(updateDimensions, 100);
     
+    window.addEventListener('resize', updateDimensions);
     return () => {
       window.removeEventListener('resize', updateDimensions);
       clearTimeout(timer);
@@ -61,18 +70,44 @@ export default function ProjectDetail() {
   }, [property]);
 
   const [containerHeight, setContainerHeight] = useState('500vh');
-
-  // Transform vertical scroll into horizontal movement
   const x = useTransform(scrollYProgress, [0, 1], [0, -xRange]);
-  
-  // Scroll to top on mount
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [id]);
 
   if (!property) {
     return <div className="h-screen flex items-center justify-center text-2xl font-serif">Project not found</div>;
   }
+
+  // Icons mapping for comfort items
+  const comfortIcons = [
+    <Bed className="w-6 h-6" />,
+    <Bath className="w-6 h-6" />,
+    <Maximize className="w-6 h-6" />,
+    <Home className="w-6 h-6" />,
+    <Flame className="w-6 h-6" />,
+    <Dumbbell className="w-6 h-6" />,
+    <Sun className="w-6 h-6" />,
+    <Luggage className="w-6 h-6" />,
+  ];
+
+  // Icons mapping for tech items
+  const techIcons = [
+    <Snowflake className="w-6 h-6" />,
+    <Thermometer className="w-6 h-6" />,
+    <Wind className="w-6 h-6" />,
+    <Droplets className="w-6 h-6" />,
+    <Sun className="w-6 h-6" />,
+    <Battery className="w-6 h-6" />,
+    <Smartphone className="w-6 h-6" />,
+    <Zap className="w-6 h-6" />,
+    <Leaf className="w-6 h-6" />,
+    <ShieldCheck className="w-6 h-6" />,
+  ];
+
+  // Icons mapping for investment items
+  const investmentIcons = [
+    <TrendingUp className="w-8 h-8" />,
+    <Award className="w-8 h-8" />,
+    <Users className="w-8 h-8" />,
+  ];
 
   return (
     <div className="bg-ink text-beige">
@@ -114,7 +149,7 @@ export default function ProjectDetail() {
                   className="absolute bottom-12 left-12 md:left-24 flex items-center gap-4 text-xs tracking-widest uppercase opacity-50"
                 >
                   <div className="w-12 h-[1px] bg-beige" />
-                  Scroll to explore
+                  {t('projectDetail.scroll')}
                 </motion.div>
               </div>
             </div>
@@ -123,28 +158,28 @@ export default function ProjectDetail() {
             <div className="h-screen w-screen flex-shrink-0 flex items-center px-12 md:px-24 bg-ink">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-24 max-w-7xl mx-auto w-full">
                 <div>
-                  <h2 className="font-serif text-4xl md:text-5xl mb-8">Concept</h2>
+                  <h2 className="font-serif text-4xl md:text-5xl mb-8">{t('projectDetail.concept')}</h2>
                   <p className="text-lg opacity-80 leading-relaxed max-w-xl">
                     {property.description}
                   </p>
                 </div>
                 <div className="flex flex-col justify-center">
-                  <h3 className="text-xs tracking-widest uppercase text-gold mb-8">Specifications</h3>
+                  <h3 className="text-xs tracking-widest uppercase text-gold mb-8">{t('projectDetail.specs')}</h3>
                   <div className="space-y-6 text-sm tracking-widest uppercase">
                     <div className="flex justify-between border-b border-white/10 pb-4">
-                      <span className="opacity-50">Internal Area</span>
+                      <span className="opacity-50">{t('projectDetail.internalArea')}</span>
                       <span>{property.area} m²</span>
                     </div>
                     <div className="flex justify-between border-b border-white/10 pb-4">
-                      <span className="opacity-50">Bedrooms</span>
+                      <span className="opacity-50">{t('projectDetail.bedrooms')}</span>
                       <span>{property.bedrooms}</span>
                     </div>
                     <div className="flex justify-between border-b border-white/10 pb-4">
-                      <span className="opacity-50">Bathrooms</span>
+                      <span className="opacity-50">{t('projectDetail.bathrooms')}</span>
                       <span>{property.bathrooms}</span>
                     </div>
                     <div className="flex justify-between border-b border-white/10 pb-4">
-                      <span className="opacity-50">Location</span>
+                      <span className="opacity-50">{t('projectDetail.location')}</span>
                       <span>{property.location}</span>
                     </div>
                   </div>
@@ -168,22 +203,16 @@ export default function ProjectDetail() {
                   transition={{ duration: 1 }}
                   className="space-y-8"
                 >
-                  <h2 className="font-serif text-5xl md:text-7xl leading-tight">Pure Architectural<br/>Vision</h2>
+                  <h2 className="font-serif text-5xl md:text-7xl leading-tight" dangerouslySetInnerHTML={{ __html: t('projectDetail.visionTitle') }} />
                   <div className="space-y-6 text-base opacity-70 leading-relaxed max-w-xl font-light">
                     <p>
-                      Raul Lino foi um influente arquiteto português, conhecido por projetos como a "Casa Portuguesa" e a "Casa do Cipreste", e embora a sua obra seja vasta e se espalhe por Portugal, ele tem uma ligação notável com Tavira, onde projetou as famosas Casas de Raul Lino (ou Casas da Família Guerreiro), um conjunto arquitetónico importante classificado como Interesse Municipal, que reflete o seu estilo único, explorando o modo de vida português e influências luso-mouriscas.
+                      {t('projectDetail.visionDesc')}
                     </p>
                   </div>
                   <div className="space-y-4">
-                    <h3 className="text-xs tracking-[0.3em] uppercase text-gold font-medium">Materials & Craftsmanship</h3>
+                    <h3 className="text-xs tracking-[0.3em] uppercase text-gold font-medium">{t('projectDetail.materials')}</h3>
                     <ul className="space-y-3 text-sm opacity-80">
-                      {[
-                        "Micro-cement floors and walls in warm, natural tones",
-                        "Premium natural wood accents",
-                        "Floor-to-ceiling glass façades",
-                        "Custom sculptural elements",
-                        "Desert garden landscaping"
-                      ].map((item, i) => (
+                      {(t('projectDetail.materialsList') as string[]).map((item, i) => (
                         <motion.li 
                           key={i}
                           initial={{ opacity: 0, x: -10 }}
@@ -222,19 +251,10 @@ export default function ProjectDetail() {
                   whileInView={{ opacity: 1, y: 0 }}
                   className="font-serif text-4xl md:text-6xl text-center"
                 >
-                  Comfort Living through thoughtful Layout
+                  {t('projectDetail.comfortTitle')}
                 </motion.h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10 border border-white/10">
-                  {[
-                    { icon: <Bed className="w-6 h-6" />, title: "3 Suites", desc: "3 Master Suites, each 25 m²" },
-                    { icon: <Bath className="w-6 h-6" />, title: "3 Bathrooms", desc: "Premium fixtures" },
-                    { icon: <Maximize className="w-6 h-6" />, title: "Atrium", desc: "Central courtyard for natural light and airflow" },
-                    { icon: <Home className="w-6 h-6" />, title: "Inside Outside Living", desc: "Seamless indoor-outdoor flow" },
-                    { icon: <Flame className="w-6 h-6" />, title: "Rooftop BBQ", desc: "Outdoor entertaining space" },
-                    { icon: <Dumbbell className="w-6 h-6" />, title: "Gym & Spa", desc: "Sauna / Ice Bath / Yoga / Mindfulness" },
-                    { icon: <Sun className="w-6 h-6" />, title: "Lightboxes", desc: "Architectural lighting features" },
-                    { icon: <Luggage className="w-6 h-6" />, title: "Fully Furnished", desc: "Turn-key ready — come with your trolley and move in" },
-                  ].map((item, i) => (
+                  {(t('projectDetail.comfortItems') as any[]).map((item, i) => (
                     <motion.div 
                       key={i}
                       initial={{ opacity: 0 }}
@@ -242,7 +262,7 @@ export default function ProjectDetail() {
                       transition={{ delay: i * 0.05 }}
                       className="flex flex-col items-center text-center p-10 bg-ink hover:bg-white/[0.02] transition-colors group"
                     >
-                      <div className="text-gold mb-6 group-hover:scale-110 transition-transform duration-500">{item.icon}</div>
+                      <div className="text-gold mb-6 group-hover:scale-110 transition-transform duration-500">{comfortIcons[i]}</div>
                       <h4 className="text-[10px] tracking-[0.3em] uppercase mb-3 font-medium">{item.title}</h4>
                       <p className="text-[9px] opacity-40 leading-relaxed max-w-[150px]">{item.desc}</p>
                     </motion.div>
@@ -259,21 +279,10 @@ export default function ProjectDetail() {
                   whileInView={{ opacity: 1, y: 0 }}
                   className="font-serif text-4xl md:text-6xl text-center"
                 >
-                  Technology & Sustainability
+                  {t('projectDetail.techTitle')}
                 </motion.h2>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-y-16 gap-x-12">
-                  {[
-                    { icon: <Snowflake className="w-6 h-6" />, title: "AC" },
-                    { icon: <Thermometer className="w-6 h-6" />, title: "Floor Heating (Water)" },
-                    { icon: <Wind className="w-6 h-6" />, title: "Air Recovery Ventilation" },
-                    { icon: <Droplets className="w-6 h-6" />, title: "Humidity Control" },
-                    { icon: <Sun className="w-6 h-6" />, title: "Solar Panel PV" },
-                    { icon: <Battery className="w-6 h-6" />, title: "Battery Storage" },
-                    { icon: <Smartphone className="w-6 h-6" />, title: "Smart Home" },
-                    { icon: <Zap className="w-6 h-6" />, title: "Car Charger" },
-                    { icon: <Leaf className="w-6 h-6" />, title: "Low Maintenance" },
-                    { icon: <ShieldCheck className="w-6 h-6" />, title: "Premium Isolation" },
-                  ].map((item, i) => (
+                  {(t('projectDetail.techItems') as string[]).map((item, i) => (
                     <motion.div 
                       key={i}
                       initial={{ opacity: 0, y: 10 }}
@@ -281,8 +290,8 @@ export default function ProjectDetail() {
                       transition={{ delay: i * 0.05 }}
                       className="flex flex-col items-center gap-6 group"
                     >
-                      <div className="text-gold/40 group-hover:text-gold transition-colors duration-500 scale-90 group-hover:scale-110">{item.icon}</div>
-                      <span className="text-[10px] tracking-[0.3em] uppercase opacity-30 group-hover:opacity-100 transition-all duration-500 text-center">{item.title}</span>
+                      <div className="text-gold/40 group-hover:text-gold transition-colors duration-500 scale-90 group-hover:scale-110">{techIcons[i]}</div>
+                      <span className="text-[10px] tracking-[0.3em] uppercase opacity-30 group-hover:opacity-100 transition-all duration-500 text-center">{item}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -298,30 +307,14 @@ export default function ProjectDetail() {
                   transition={{ duration: 1 }}
                   className="space-y-6"
                 >
-                  <h2 className="font-serif text-6xl md:text-8xl">A Singular Investment</h2>
+                  <h2 className="font-serif text-6xl md:text-8xl">{t('projectDetail.investmentTitle')}</h2>
                   <p className="text-xl opacity-60 max-w-2xl mx-auto font-light leading-relaxed">
-                    Beyond lifestyle, this property represents a strategic acquisition in one of Europe's most desirable coastal regions
+                    {t('projectDetail.investmentDesc')}
                   </p>
                 </motion.div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-ink/10 border border-ink/10">
-                  {[
-                    { 
-                      icon: <TrendingUp className="w-8 h-8" />, 
-                      title: "Strong Value Growth", 
-                      desc: "The Eastern Algarve continues to see robust appreciation, with premium properties in high demand from international buyers." 
-                    },
-                    { 
-                      icon: <Award className="w-8 h-8" />, 
-                      title: "Ultra-Rare Design", 
-                      desc: "Modern architectural masterpieces of this caliber are exceptionally scarce in the Algarve, making this a truly unique opportunity." 
-                    },
-                    { 
-                      icon: <Users className="w-8 h-8" />, 
-                      title: "Rental Potential", 
-                      desc: "Luxury villas in Luz de Tavira command premium rental rates, offering excellent returns for investment-minded owners." 
-                    },
-                  ].map((item, i) => (
+                  {(t('projectDetail.investmentItems') as any[]).map((item, i) => (
                     <motion.div 
                       key={i}
                       initial={{ opacity: 0, y: 20 }}
@@ -329,7 +322,7 @@ export default function ProjectDetail() {
                       transition={{ delay: i * 0.1 }}
                       className="p-12 bg-beige hover:bg-ink/[0.02] transition-colors group space-y-6"
                     >
-                      <div className="text-gold flex justify-center group-hover:scale-110 transition-transform duration-500">{item.icon}</div>
+                      <div className="text-gold flex justify-center group-hover:scale-110 transition-transform duration-500">{investmentIcons[i]}</div>
                       <div className="space-y-4">
                         <h3 className="text-xs tracking-[0.3em] uppercase font-bold">{item.title}</h3>
                         <p className="text-sm opacity-70 leading-relaxed font-light">{item.desc}</p>
@@ -345,7 +338,7 @@ export default function ProjectDetail() {
                   className="pt-8"
                 >
                   <p className="text-[10px] tracking-[0.3em] uppercase opacity-40">
-                    Exclusive viewings by appointment only
+                    {t('projectDetail.viewing')}
                   </p>
                 </motion.div>
               </div>
@@ -362,17 +355,61 @@ export default function ProjectDetail() {
 
             {/* Section 9: CTA */}
             <div className="h-screen w-screen flex-shrink-0 flex items-center justify-center bg-beige text-ink relative">
-              <div className="text-center max-w-2xl px-6">
-                <h2 className="font-serif text-5xl md:text-7xl mb-8">Inquire</h2>
-                <p className="text-sm tracking-widest uppercase opacity-60 mb-12">
-                  Pricing and detailed specifications available upon request.
-                </p>
-                <Link 
-                  to="/contact" 
-                  className="inline-block px-12 py-5 bg-ink text-beige text-sm tracking-widest uppercase hover:bg-gold hover:text-white transition-colors duration-300"
-                >
-                  Request Information
-                </Link>
+              <div className="w-full max-w-xl px-6">
+                <div className="text-center mb-12">
+                  <h2 className="font-serif text-5xl md:text-7xl mb-4">{t('projectDetail.inquireTitle')}</h2>
+                  <p className="text-sm tracking-widest uppercase opacity-60">
+                    {t('projectDetail.inquireSubtitle')} {property.name}
+                  </p>
+                </div>
+
+                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-[10px] tracking-widest uppercase opacity-40 ml-1">{t('projectDetail.form.name')}</label>
+                      <input 
+                        type="text" 
+                        placeholder={t('projectDetail.form.placeholderName')}
+                        className="w-full bg-transparent border-b border-ink/20 py-3 px-1 text-sm focus:border-gold outline-none transition-colors placeholder:opacity-20"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] tracking-widest uppercase opacity-40 ml-1">{t('projectDetail.form.phone')}</label>
+                      <input 
+                        type="tel" 
+                        placeholder={t('projectDetail.form.placeholderPhone')}
+                        className="w-full bg-transparent border-b border-ink/20 py-3 px-1 text-sm focus:border-gold outline-none transition-colors placeholder:opacity-20"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <label className="text-[10px] tracking-widest uppercase opacity-40 ml-1">{t('projectDetail.form.email')}</label>
+                    <input 
+                      type="email" 
+                      placeholder={t('projectDetail.form.placeholderEmail')}
+                      className="w-full bg-transparent border-b border-ink/20 py-3 px-1 text-sm focus:border-gold outline-none transition-colors placeholder:opacity-20"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] tracking-widest uppercase opacity-40 ml-1">{t('projectDetail.form.message')}</label>
+                    <textarea 
+                      rows={3}
+                      placeholder={t('projectDetail.form.placeholderMessage')}
+                      className="w-full bg-transparent border-b border-ink/20 py-3 px-1 text-sm focus:border-gold outline-none transition-colors placeholder:opacity-20 resize-none"
+                    />
+                  </div>
+
+                  <div className="pt-6 text-center">
+                    <button 
+                      type="submit"
+                      className="px-16 py-5 bg-ink text-beige text-xs tracking-[0.4em] uppercase hover:bg-gold transition-colors duration-500 shadow-xl"
+                    >
+                      {t('projectDetail.form.submit')}
+                    </button>
+                  </div>
+                </form>
               </div>
               <div className="absolute bottom-12 right-12 text-xs tracking-widest uppercase opacity-40">
                 Elements Architecture

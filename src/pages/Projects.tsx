@@ -1,8 +1,11 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { properties } from '../data/properties';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Projects() {
+  const { t } = useLanguage();
+  
   return (
     <div className="bg-beige min-h-screen pt-32 pb-24 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
@@ -12,9 +15,9 @@ export default function Projects() {
           transition={{ duration: 0.8 }}
           className="mb-20"
         >
-          <h1 className="font-serif text-5xl md:text-7xl mb-6">Environments</h1>
+          <h1 className="font-serif text-5xl md:text-7xl mb-6">{t('projects.title')}</h1>
           <p className="text-sm tracking-widest uppercase opacity-60 max-w-md">
-            A curated selection of our engineered habitats in the Algarve.
+            {t('projects.subtitle')}
           </p>
         </motion.div>
 
@@ -44,7 +47,7 @@ export default function Projects() {
                   </div>
                   <div className="text-xs tracking-widest uppercase opacity-40 text-right">
                     <div>{prop.area} m²</div>
-                    <div>{prop.bedrooms} Beds</div>
+                    <div>{prop.bedrooms} {t('projectDetail.form.beds') || 'Beds'}</div>
                   </div>
                 </div>
               </Link>

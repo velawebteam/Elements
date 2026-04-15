@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Contact() {
+  const { t } = useLanguage();
+
   return (
     <div className="bg-beige min-h-screen pt-32 pb-24 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
@@ -10,9 +13,9 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
           className="mb-20"
         >
-          <h1 className="font-serif text-5xl md:text-7xl mb-6">Connect</h1>
+          <h1 className="font-serif text-5xl md:text-7xl mb-6">{t('contact.title')}</h1>
           <p className="text-sm tracking-widest uppercase opacity-60 max-w-md">
-            Schedule a private viewing or request detailed specifications.
+            {t('contact.subtitle')}
           </p>
         </motion.div>
 
@@ -29,10 +32,10 @@ export default function Contact() {
                   type="text" 
                   id="name"
                   className="w-full bg-transparent border-b border-ink/20 py-4 focus:outline-none focus:border-ink transition-colors peer placeholder-transparent"
-                  placeholder="Name"
+                  placeholder={t('contact.form.name')}
                 />
                 <label htmlFor="name" className="absolute left-0 top-4 text-sm tracking-widest uppercase opacity-50 peer-focus:-top-4 peer-focus:text-xs transition-all peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
-                  Full Name
+                  {t('contact.form.nameLabel')}
                 </label>
               </div>
               
@@ -41,10 +44,10 @@ export default function Contact() {
                   type="email" 
                   id="email"
                   className="w-full bg-transparent border-b border-ink/20 py-4 focus:outline-none focus:border-ink transition-colors peer placeholder-transparent"
-                  placeholder="Email"
+                  placeholder={t('contact.form.email')}
                 />
                 <label htmlFor="email" className="absolute left-0 top-4 text-sm tracking-widest uppercase opacity-50 peer-focus:-top-4 peer-focus:text-xs transition-all peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
-                  Email Address
+                  {t('contact.form.emailLabel')}
                 </label>
               </div>
 
@@ -53,15 +56,15 @@ export default function Contact() {
                   id="message"
                   rows={4}
                   className="w-full bg-transparent border-b border-ink/20 py-4 focus:outline-none focus:border-ink transition-colors peer placeholder-transparent resize-none"
-                  placeholder="Message"
+                  placeholder={t('contact.form.message')}
                 ></textarea>
                 <label htmlFor="message" className="absolute left-0 top-4 text-sm tracking-widest uppercase opacity-50 peer-focus:-top-4 peer-focus:text-xs transition-all peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
-                  Inquiry Details
+                  {t('contact.form.messageLabel')}
                 </label>
               </div>
 
               <button className="px-12 py-5 bg-ink text-beige text-sm tracking-widest uppercase hover:bg-gold hover:text-white transition-colors duration-300 w-full md:w-auto">
-                Submit Inquiry
+                {t('contact.form.submit')}
               </button>
             </form>
           </motion.div>
@@ -75,7 +78,7 @@ export default function Contact() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
               <div>
-                <h3 className="text-xs tracking-widest uppercase text-gold mb-4">Headquarters</h3>
+                <h3 className="text-xs tracking-widest uppercase text-gold mb-4">{t('contact.info.hq')}</h3>
                 <p className="font-serif text-xl leading-relaxed">
                   Avenida da Liberdade 110<br />
                   1250-146 Lisbon<br />
@@ -83,7 +86,7 @@ export default function Contact() {
                 </p>
               </div>
               <div>
-                <h3 className="text-xs tracking-widest uppercase text-gold mb-4">Direct Contact</h3>
+                <h3 className="text-xs tracking-widest uppercase text-gold mb-4">{t('contact.info.direct')}</h3>
                 <div className="space-y-4">
                   <p className="font-serif text-xl">
                     <a href="mailto:inquiries@elements.pt" className="hover:text-gold transition-colors">inquiries@elements.pt</a>

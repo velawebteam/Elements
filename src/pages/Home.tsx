@@ -3,8 +3,10 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Wind, Sun, Maximize, Heart } from 'lucide-react';
 import { properties } from '../data/properties';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Home() {
+  const { t } = useLanguage();
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -33,7 +35,7 @@ export default function Home() {
             transition={{ duration: 1, delay: 0.2 }}
             className="text-xs md:text-sm tracking-[0.3em] uppercase mb-6 text-gold-light"
           >
-            Nordic Construction - Algarve Living
+            {t('home.hero.nordic')}
           </motion.p>
           <motion.h1 
             initial={{ opacity: 0, y: 30 }}
@@ -41,7 +43,7 @@ export default function Home() {
             transition={{ duration: 1.2, delay: 0.4 }}
             className="font-serif text-5xl md:text-7xl lg:text-8xl max-w-5xl leading-[0.9] tracking-tight mb-12"
           >
-            We create Human Performance Environments.
+            {t('home.hero.title')}
           </motion.h1>
           
           <motion.div 
@@ -51,10 +53,10 @@ export default function Home() {
             className="flex flex-col sm:flex-row gap-6"
           >
             <Link to="/projects" className="px-8 py-4 bg-white text-ink text-sm tracking-widest uppercase hover:bg-gold hover:text-white transition-colors duration-300">
-              Explore Projects
+              {t('home.hero.cta')}
             </Link>
             <Link to="/contact" className="px-8 py-4 border border-white text-white text-sm tracking-widest uppercase hover:bg-white hover:text-ink transition-colors duration-300">
-              Schedule a Visit
+              {t('home.hero.visit')}
             </Link>
           </motion.div>
         </div>
@@ -71,7 +73,7 @@ export default function Home() {
             className="text-center mb-24"
           >
             <h2 className="font-serif text-5xl md:text-7xl mb-4 uppercase tracking-tight">ELEMENTS Algarve</h2>
-            <p className="text-sm tracking-widest uppercase opacity-60">We create Nordic-standard & -quality homes in Portugal</p>
+            <p className="text-sm tracking-widest uppercase opacity-60">{t('home.philosophy.subtitle')}</p>
           </motion.div>
 
           <div className="max-w-4xl mx-auto text-center space-y-16 mb-32">
@@ -82,9 +84,9 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.2 }}
               className="space-y-6"
             >
-              <p className="text-xl md:text-2xl font-serif italic opacity-60">We do not merely build houses.</p>
+              <p className="text-xl md:text-2xl font-serif italic opacity-60">{t('home.philosophy.p1')}</p>
               <p className="text-3xl md:text-5xl font-serif leading-tight">
-                We create <span className="text-gold">Human Performance Environments</span> — residences engineered for longevity, health, and measurable performance.
+                {t('home.philosophy.p2')}
               </p>
             </motion.div>
             
@@ -103,9 +105,9 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.4 }}
               className="space-y-6"
             >
-              <p className="text-xl md:text-2xl font-serif italic opacity-60">Where others decorate, we design.</p>
+              <p className="text-xl md:text-2xl font-serif italic opacity-60">{t('home.philosophy.p3')}</p>
               <p className="text-3xl md:text-5xl font-serif leading-tight">
-                Where others sell lifestyle, we construct systems.
+                {t('home.philosophy.p4')}
               </p>
             </motion.div>
           </div>
@@ -131,9 +133,9 @@ export default function Home() {
       <section className="py-32 bg-white px-6 md:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-16">
-            <h2 className="font-serif text-4xl md:text-6xl">Featured Projects</h2>
+            <h2 className="font-serif text-4xl md:text-6xl">{t('home.featured.title')}</h2>
             <Link to="/projects" className="text-sm tracking-widest uppercase hover:text-gold transition-colors pb-2 border-b border-ink hover:border-gold">
-              View All
+              {t('home.featured.viewAll')}
             </Link>
           </div>
           
@@ -162,39 +164,39 @@ export default function Home() {
             {[
               { 
                 id: '01',
-                name: 'Comfort', 
+                name: t('home.pillars.comfort.name'), 
                 icon: <Wind size={24} strokeWidth={1} />,
-                tagline: 'Come Home, Let Go',
-                description: 'Step inside and feel the tension leave your body. Warm floors beneath bare feet, pure air that fills your lungs effortlessly, and a gentle warmth that wraps around you — no cold corners, no drafts, just deep physical comfort that lets you fully unwind from the moment you walk in.',
-                stat: '21-23°C',
-                statLabel: 'ALWAYS WARM'
+                tagline: t('home.pillars.comfort.tagline'),
+                description: t('home.pillars.comfort.description'),
+                stat: t('home.pillars.comfort.stat'),
+                statLabel: t('home.pillars.comfort.statLabel')
               },
               { 
                 id: '02',
-                name: 'Light', 
+                name: t('home.pillars.light.name'), 
                 icon: <Sun size={24} strokeWidth={1} />,
-                tagline: 'Wake Naturally, Sleep Deeply',
-                description: 'Mornings filled with soft, energising daylight that gently wakes your body. Evenings that dim into warm, calming tones so your mind naturally winds down. No alarms forcing you awake, no screens keeping you up — just light that moves with your rhythm, helping you feel rested, focused, and alive.',
-                stat: '100%',
-                statLabel: 'NATURAL RHYTHM'
+                tagline: t('home.pillars.light.tagline'),
+                description: t('home.pillars.light.description'),
+                stat: t('home.pillars.light.stat'),
+                statLabel: t('home.pillars.light.statLabel')
               },
               { 
                 id: '03',
-                name: 'Space', 
+                name: t('home.pillars.space.name'), 
                 icon: <Maximize size={24} strokeWidth={1} />,
-                tagline: 'Room to Breathe, Space to Think',
-                description: "A home where silence isn't empty — it's restorative. Where every room feels open yet intimate, calm yet alive. The kind of space where your shoulders drop, your breathing slows, and creative thoughts return. Designed not just for living, but for recovering, reflecting, and reconnecting with yourself.",
-                stat: '∞',
-                statLabel: 'INNER CALM'
+                tagline: t('home.pillars.space.tagline'),
+                description: t('home.pillars.space.description'),
+                stat: t('home.pillars.space.stat'),
+                statLabel: t('home.pillars.space.statLabel')
               },
               { 
                 id: '04',
-                name: 'Wellbeing', 
+                name: t('home.pillars.wellbeing.name'), 
                 icon: <Heart size={24} strokeWidth={1} />,
-                tagline: 'Recharge Body & Mind',
-                description: 'From the deep warmth of your private sauna to the sharp awakening rush of an ice bath — your body resets, stress melts away, and energy returns. Combined with pure air, circadian light, and restorative spaces, every day brings better sleep, clearer thinking, and more vitality. Health isn\'t a discipline here — it\'s simply how you live.',
-                stat: 'A+',
-                statLabel: 'VITALITY'
+                tagline: t('home.pillars.wellbeing.tagline'),
+                description: t('home.pillars.wellbeing.description'),
+                stat: t('home.pillars.wellbeing.stat'),
+                statLabel: t('home.pillars.wellbeing.statLabel')
               }
             ].map((pillar, idx) => (
               <motion.div 
@@ -250,23 +252,23 @@ export default function Home() {
       {/* Services / Approach */}
       <section className="py-32 px-6 md:px-12 bg-ink text-beige">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="font-serif text-4xl md:text-6xl mb-20">Where others sell lifestyle,<br/>we construct systems.</h2>
+          <h2 className="font-serif text-4xl md:text-6xl mb-20">{t('home.services.title')}</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-left">
             <div>
               <div className="text-gold text-2xl mb-4 font-serif">01</div>
-              <h3 className="text-xl tracking-widest uppercase mb-4">Thermal Mass Engineering</h3>
-              <p className="opacity-70 leading-relaxed text-sm">Structures that naturally regulate temperature, reducing reliance on artificial climate control while maintaining optimal comfort.</p>
+              <h3 className="text-xl tracking-widest uppercase mb-4">{t('home.services.s1.title')}</h3>
+              <p className="opacity-70 leading-relaxed text-sm">{t('home.services.s1.desc')}</p>
             </div>
             <div>
               <div className="text-gold text-2xl mb-4 font-serif">02</div>
-              <h3 className="text-xl tracking-widest uppercase mb-4">Acoustic Isolation</h3>
-              <p className="opacity-70 leading-relaxed text-sm">Precision-engineered materials and spatial design that eliminate external noise pollution, creating sanctuaries of absolute silence.</p>
+              <h3 className="text-xl tracking-widest uppercase mb-4">{t('home.services.s2.title')}</h3>
+              <p className="opacity-70 leading-relaxed text-sm">{t('home.services.s2.desc')}</p>
             </div>
             <div>
               <div className="text-gold text-2xl mb-4 font-serif">03</div>
-              <h3 className="text-xl tracking-widest uppercase mb-4">Biophilic Integration</h3>
-              <p className="opacity-70 leading-relaxed text-sm">Seamless connection between interior spaces and the natural environment, proven to reduce stress and enhance cognitive function.</p>
+              <h3 className="text-xl tracking-widest uppercase mb-4">{t('home.services.s3.title')}</h3>
+              <p className="opacity-70 leading-relaxed text-sm">{t('home.services.s3.desc')}</p>
             </div>
           </div>
         </div>
@@ -282,16 +284,16 @@ export default function Home() {
               viewport={{ once: true }}
               transition={{ duration: 1 }}
             >
-              <h3 className="text-xs tracking-[0.3em] uppercase text-gold mb-6">Strategic Partnership</h3>
+              <h3 className="text-xs tracking-[0.3em] uppercase text-gold mb-6">{t('home.partnership.tag')}</h3>
               <h2 className="font-serif text-5xl md:text-7xl mb-8 leading-tight">
-                Real Builder Academy
+                {t('home.partnership.title')}
               </h2>
               <div className="space-y-6 text-lg opacity-70 leading-relaxed mb-12 max-w-xl">
                 <p>
-                  ELEMENTS ALGARVE partners with Real Builder Academy to bring exceptional development expertise and educational resources to our projects.
+                  {t('home.partnership.p1')}
                 </p>
                 <p>
-                  This partnership enables us to maintain the highest construction standards while providing transparent, educational insights into the development process for our clients.
+                  {t('home.partnership.p2')}
                 </p>
               </div>
               <a 
@@ -300,7 +302,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-10 py-5 bg-ink text-beige text-sm tracking-widest uppercase hover:bg-gold transition-colors duration-300"
               >
-                Visit Real Builder Academy <span className="ml-3 text-lg">↗</span>
+                {t('home.partnership.cta')} <span className="ml-3 text-lg">↗</span>
               </a>
             </motion.div>
 

@@ -1,55 +1,100 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
-// Combined gallery images from all properties for the exhibition feel
+// Combined gallery images with specific layout hints for an editorial feel
 const galleryImages = [
-  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1600607688969-a5bfcd64bd40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1600566753086-00f18efc2291?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+  { 
+    url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    size: "col-span-2 row-span-2",
+  },
+  { 
+    url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    size: "col-span-1 row-span-1",
+  },
+  { 
+    url: "https://images.unsplash.com/photo-1600607688969-a5bfcd64bd40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    size: "col-span-1 row-span-2",
+  },
+  { 
+    url: "https://images.unsplash.com/photo-1600607687644-aac4c3eac7f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    size: "col-span-1 row-span-1",
+  },
+  { 
+    url: "https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    size: "col-span-2 row-span-1",
+  },
+  { 
+    url: "https://images.unsplash.com/photo-1600566753086-00f18efc2291?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    size: "col-span-1 row-span-1",
+  },
+  { 
+    url: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    size: "col-span-1 row-span-2",
+  },
+  { 
+    url: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    size: "col-span-2 row-span-2",
+  },
+  { 
+    url: "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80",
+    size: "col-span-1 row-span-1",
+  }
 ];
 
 export default function Galerie() {
+  const { t } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const titles = t('galerie.titles') as string[];
 
   return (
     <div className="bg-ink text-beige min-h-screen pt-32 pb-24 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-24 text-center"
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="mb-32 text-center"
         >
-          <h1 className="font-serif text-5xl md:text-7xl mb-6">Exhibition</h1>
-          <p className="text-sm tracking-widest uppercase opacity-60 max-w-md mx-auto">
-            A study of materials, light, and form.
+          <h1 className="font-serif text-6xl md:text-8xl mb-8 tracking-tight">{t('galerie.title')}</h1>
+          <div className="w-12 h-px bg-gold mx-auto mb-8 opacity-50" />
+          <p className="text-xs tracking-[0.4em] uppercase opacity-40 max-w-md mx-auto leading-relaxed">
+            {t('galerie.subtitle')}
           </p>
         </motion.div>
 
-        {/* Artistic Masonry Grid */}
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-          {galleryImages.map((img, index) => (
+        {/* Editorial Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:auto-rows-[300px]">
+          {galleryImages.map((item, index) => (
             <motion.div 
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: (index % 3) * 0.2 }}
-              className="break-inside-avoid cursor-pointer group relative overflow-hidden"
-              onClick={() => setSelectedImage(img)}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ 
+                duration: 1.2, 
+                delay: index * 0.1,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+              className={`${item.size} cursor-pointer group relative overflow-hidden bg-ink/50`}
+              onClick={() => setSelectedImage(item.url)}
             >
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-              <img 
-                src={img} 
-                alt={`Exhibition detail ${index + 1}`} 
-                className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-105"
+              <div className="absolute inset-0 bg-ink/40 group-hover:bg-ink/10 transition-colors duration-700 z-10" />
+              
+              {/* Image Label - Editorial Style */}
+              <div className="absolute bottom-6 left-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                <p className="text-[10px] tracking-[0.3em] uppercase text-white font-medium mb-1">
+                  {String(index + 1).padStart(2, '0')}
+                </p>
+                <h3 className="text-sm font-serif italic text-gold-light">{titles[index]}</h3>
+              </div>
+
+              <motion.img 
+                src={item.url} 
+                alt={titles[index]} 
+                className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110"
+                loading="lazy"
               />
             </motion.div>
           ))}
