@@ -10,6 +10,7 @@ import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
 import Galerie from './pages/Galerie';
 import Contact from './pages/Contact';
+import Legal from './pages/Legal';
 import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider } from './context/LanguageContext';
 
@@ -25,6 +26,8 @@ export default function App() {
             <Route path="projects/:id" element={<ProjectDetail />} />
             <Route path="galerie" element={<Galerie />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="terms" element={<Legal />} />
+            <Route path="privacy" element={<Legal />} />
           </Route>
         </Routes>
       </Router>

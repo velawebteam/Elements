@@ -7,9 +7,24 @@ import { useLanguage } from '../context/LanguageContext';
 
 export default function Layout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { lang, setLang, t } = useLanguage();
   const location = useLocation();
   const lenisRef = useRef<Lenis | null>(null);
+
+  // Monitor scroll for header background
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Initialize Lenis for smooth scrolling
   useEffect(() => {
@@ -60,7 +75,7 @@ export default function Layout() {
   return (
     <div className="min-h-screen flex flex-col bg-beige text-ink">
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full z-50 px-6 py-6 md:px-12 flex justify-between items-center mix-blend-difference text-white">
+      <header className={`fixed top-0 left-0 w-full z-50 px-6 transition-all duration-500 md:px-12 flex justify-between items-center ${scrolled ? 'bg-ink py-4 shadow-xl text-beige' : 'py-6 mix-blend-difference text-white'}`}>
         <Link to="/" className="font-serif text-2xl tracking-widest uppercase z-50">
           Elements
         </Link>
@@ -141,9 +156,32 @@ export default function Layout() {
             </a>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 text-xs opacity-50 flex justify-between uppercase tracking-widest">
-          <span>© {new Date().getFullYear()} Elements</span>
-          <span>{t('footer.location')}</span>
+        <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-white/10 text-[10px] md:text-xs opacity-50 flex flex-col md:flex-row justify-between gap-6 uppercase tracking-widest">
+          <div className="flex flex-wrap gap-2 md:gap-4 items-center">
+            <span>© {new Date().getFullYear()} Elements</span>
+            <span className="hidden md:inline opacity-30">|</span>
+            <span>
+              {t('footer.developedBy')}{' '}
+              <a 
+                href="https://agencia-vela.com" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="text-gold hover:opacity-80 transition-all underline underline-offset-4"
+              >
+                Agência Vela
+              </a>
+            </span>
+          </div>
+          
+          <div className="flex flex-wrap gap-4 md:gap-8 md:justify-end items-center">
+            <Link to="/terms" className="hover:text-gold transition-colors">{t('legal.terms.title')}</Link>
+            <Link to="/privacy" className="hover:text-gold transition-colors">{t('legal.privacy.title')}</Link>
+            <a href="https://www.livroreclamacoes.pt/Inicio/" target="_blank" rel="noreferrer" className="hover:text-gold transition-colors">
+              {t('footer.complaints')}
+            </a>
+            <span className="hidden md:inline opacity-30">|</span>
+            <span>{t('footer.location')}</span>
+          </div>
         </div>
       </footer>
     </div>

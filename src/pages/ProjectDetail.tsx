@@ -30,6 +30,10 @@ export default function ProjectDetail() {
   const { t } = useLanguage();
   const { id } = useParams();
   const property = properties.find(p => p.id === id);
+  const projectData = t(`projects.data.${id}`);
+  const statusKey = property?.status === 'COMING SOON' ? 'comingSoon' : 
+                   property?.status === 'IN DEVELOPMENT' ? 'inDevelopment' : 'available';
+
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const [xRange, setXRange] = useState(0);
@@ -126,13 +130,23 @@ export default function ProjectDetail() {
                 <div className="absolute inset-0 bg-gradient-to-r from-ink/80 to-transparent" />
               </div>
               <div className="relative z-10 px-12 md:px-24 w-full max-w-7xl mx-auto">
+                <div className="mb-6 flex gap-4">
+                  <motion.span 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 0.3 }}
+                    className="bg-gold/20 backdrop-blur-md text-gold px-4 py-1 text-[10px] tracking-[0.2em] uppercase font-medium border border-gold/30"
+                  >
+                    {t(`projects.status.${statusKey}`)}
+                  </motion.span>
+                </div>
                 <motion.h1 
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, delay: 0.5 }}
-                  className="font-serif text-6xl md:text-9xl mb-6"
+                  className="font-serif text-6xl md:text-8xl lg:text-9xl mb-6"
                 >
-                  {property.name}
+                  {projectData.name || property.name}
                 </motion.h1>
                 <motion.p 
                   initial={{ opacity: 0 }}
@@ -140,7 +154,7 @@ export default function ProjectDetail() {
                   transition={{ duration: 1, delay: 1 }}
                   className="text-sm tracking-[0.3em] uppercase text-gold"
                 >
-                  {property.location}
+                  {projectData.location || property.location}
                 </motion.p>
                 <motion.div 
                   initial={{ opacity: 0 }}
@@ -160,7 +174,7 @@ export default function ProjectDetail() {
                 <div>
                   <h2 className="font-serif text-4xl md:text-5xl mb-8">{t('projectDetail.concept')}</h2>
                   <p className="text-lg opacity-80 leading-relaxed max-w-xl">
-                    {property.description}
+                    {projectData.description || property.description}
                   </p>
                 </div>
                 <div className="flex flex-col justify-center">
@@ -178,10 +192,15 @@ export default function ProjectDetail() {
                       <span className="opacity-50">{t('projectDetail.bathrooms')}</span>
                       <span>{property.bathrooms}</span>
                     </div>
-                    <div className="flex justify-between border-b border-white/10 pb-4">
-                      <span className="opacity-50">{t('projectDetail.location')}</span>
-                      <span>{property.location}</span>
-                    </div>
+                    {property.specs && property.specs.length > 0 && (
+                      <div className="flex flex-wrap gap-2 pt-4">
+                        {property.specs.map(spec => (
+                          <span key={spec} className="border border-white/20 px-3 py-1 text-[10px] opacity-60">
+                            {spec}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

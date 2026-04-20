@@ -94,6 +94,53 @@ export const translations: Record<Language, Record<string, any>> = {
     projects: {
       title: 'Projects',
       subtitle: 'Architectural responses to the human condition.',
+      status: {
+        comingSoon: 'Coming Soon',
+        inDevelopment: 'In Development',
+        available: 'Available'
+      },
+      data: {
+        'escarpa-boa-vista': {
+          name: 'ESCARPA BOA VISTA',
+          location: 'Salema, Algarve',
+          description: 'A dramatic cliff-edge residence overlooking the Atlantic, where architecture meets the elements in perfect harmony. Engineered for longevity and sensory performance.'
+        },
+        'panoramico': {
+          name: 'PANORAMICO',
+          location: 'Boliqueime, Algarve',
+          description: 'Elevated living with 360-degree views of the Algarve coastline. A masterclass in thermal mass engineering and biophilic integration.'
+        },
+        'tavira-residences': {
+          name: 'TAVIRA RESIDENCES',
+          location: 'Tavira, Algarve',
+          description: 'A collection of 15 premium apartments in the heart of Tavira, blending historical context with modern performance standards.'
+        },
+        'villa-quinta-do-lago': {
+          name: 'VILLA QUINTA DO LAGO',
+          location: 'Quinta do Lago, Algarve',
+          description: 'Unrivaled luxury with private lake access. This estate represents the pinnacle of our Nordic-standard construction in the Algarve.'
+        },
+        'casa-da-natureza': {
+          name: 'CASA DA NATUREZA',
+          location: 'Monchique, Algarve',
+          description: 'A secluded sanctuary embedded in the Monchique forest. Minimal form meets maximum acoustic isolation for absolute restorative silence.'
+        },
+        'alma-luz': {
+          name: 'ALMA LUZ',
+          location: 'Luz de Tavira, Algarve',
+          description: 'Three sculptural townhouses designed for seamless inside-outside living, featuring rooftop sanctuaries with private wellness facilities.'
+        },
+        'casa-raul-lino': {
+          name: 'CASA RAUL LINO',
+          location: 'Azeitão, Setúbal',
+          description: 'A heritage masterpiece restored to modern performance standards. Exploring the Luso-Moorish influences through a contemporary lens.'
+        },
+        'casa-luz': {
+          name: 'CASA LUZ',
+          location: 'Praia da Luz, Algarve',
+          description: 'A singular acquisition in one of Europe\'s most desirable coastal regions. Designed for longevity, health, and measurable performance.'
+        }
+      }
     },
     projectDetail: {
       concept: 'Concept',
@@ -173,6 +220,48 @@ export const translations: Record<Language, Record<string, any>> = {
     footer: {
       desc: 'Residences engineered for longevity, health, and measurable performance. Where others decorate, we design.',
       location: 'Algarve, Portugal',
+      complaints: 'Complaint Book',
+      developedBy: 'Website developed by',
+    },
+    legal: {
+      terms: {
+        title: 'Terms & Conditions',
+        sections: [
+          { 
+            title: '1. Introduction', 
+            content: [
+              'Welcome to Elements Algarve. By accessing our website, you agree to these terms and conditions in full.',
+              'All architectural designs, renderings, and content shown are the exclusive property of Elements Algarve and are protected by international intellectual property laws.'
+            ] 
+          },
+          { 
+            title: '2. Informational Purpose', 
+            content: [
+              'The content provided on this website is for informational and marketing purposes only and does not constitute a binding contract.',
+              'We reserve the right to modify project specifications, dimensions, materials, or availability at any time without prior notice.'
+            ] 
+          }
+        ]
+      },
+      privacy: {
+        title: 'Privacy Policy',
+        sections: [
+          { 
+            title: '1. Data Collection', 
+            content: [
+              'We collect personal information (such as name, email, and phone number) exclusively through our contact forms when you voluntarily provide it.',
+              'This data is used solely to respond to your inquiries and provide details about our performance environments.'
+            ] 
+          },
+          { 
+            title: '2. Confidentiality', 
+            content: [
+              'Your data is treated with absolute confidentiality. We do not sell, trade, or otherwise transfer your personally identifiable information to outside parties.',
+              'We implement state-of-the-art security measures to maintain the safety of your personal information.'
+            ] 
+          }
+        ]
+      }
     }
   },
   PT: {
@@ -258,6 +347,53 @@ export const translations: Record<Language, Record<string, any>> = {
     projects: {
       title: 'Projetos',
       subtitle: 'Respostas arquitetónicas à condição humana.',
+      status: {
+        comingSoon: 'Brevemente',
+        inDevelopment: 'Em Desenvolvimento',
+        available: 'Disponível'
+      },
+      data: {
+        'escarpa-boa-vista': {
+          name: 'ESCARPA BOA VISTA',
+          location: 'Salema, Algarve',
+          description: 'Uma residência dramática à beira da falésia com vista para o Atlântico, onde a arquitetura se encontra com os elementos em perfeita harmonia. Projetada para longevidade e performance sensorial.'
+        },
+        'panoramico': {
+          name: 'PANORAMICO',
+          location: 'Boliqueime, Algarve',
+          description: 'Vida elevada com vistas de 360 graus da costa algarvia. Uma aula de mestre em engenharia de massa térmica e integração biofílica.'
+        },
+        'tavira-residences': {
+          name: 'TAVIRA RESIDENCES',
+          location: 'Tavira, Algarve',
+          description: 'Uma coleção de 15 apartamentos premium no coração de Tavira, fundindo o contexto histórico com padrões modernos de performance.'
+        },
+        'villa-quinta-do-lago': {
+          name: 'VILLA QUINTA DO LAGO',
+          location: 'Quinta do Lago, Algarve',
+          description: 'Luxo inigualável com acesso privado ao lago. Esta propriedade representa o auge da nossa construção de padrão nórdico no Algarve.'
+        },
+        'casa-da-natureza': {
+          name: 'CASA DA NATUREZA',
+          location: 'Monchique, Algarve',
+          description: 'Um santuário isolado inserido na floresta de Monchique. Forma minimalista encontra o isolamento acústico máximo para um silêncio restaurador absoluto.'
+        },
+        'alma-luz': {
+          name: 'ALMA LUZ',
+          location: 'Luz de Tavira, Algarve',
+          description: 'Três moradias esculturais concebidas para uma vivência interior-exterior contínua, com santuários no telhado e instalações de bem-estar privadas.'
+        },
+        'casa-raul-lino': {
+          name: 'CASA RAUL LINO',
+          location: 'Azeitão, Setúbal',
+          description: 'Uma obra-prima histórica restaurada para padrões modernos de performance. Explorando as influências luso-mouriscas através de uma lente contemporânea.'
+        },
+        'casa-luz': {
+          name: 'CASA LUZ',
+          location: 'Praia da Luz, Algarve',
+          description: 'Uma aquisição singular numa das regiões costeiras mais desejáveis da Europa. Concebida para longevidade, saúde e performance mensurável.'
+        }
+      }
     },
     projectDetail: {
       concept: 'Conceito',
@@ -337,6 +473,48 @@ export const translations: Record<Language, Record<string, any>> = {
     footer: {
       desc: 'Residências projetadas para longevidade, saúde e performance mensurável. Onde outros decoram, nós projetamos.',
       location: 'Algarve, Portugal',
+      complaints: 'Livro de Reclamações',
+      developedBy: 'Website desenvolvido por',
+    },
+    legal: {
+      terms: {
+        title: 'Termos e Condições',
+        sections: [
+          { 
+            title: '1. Introdução', 
+            content: [
+              'Bem-vindo ao Elements Algarve. Ao aceder ao nosso website, concorda integralmente com estes termos e condições.',
+              'Todos os designs arquitetónicos, representações e conteúdos apresentados são propriedade exclusiva da Elements Algarve e estão protegidos pelas leis internacionais de propriedade intelectual.'
+            ] 
+          },
+          { 
+            title: '2. Fins Informativos', 
+            content: [
+              'O conteúdo fornecido neste website destina-se apenas a fins informativos e de marketing e não constitui um contrato vinculativo.',
+              'Reservamos o direito de modificar as especificações, dimensões, materiais ou disponibilidade dos projetos a qualquer momento e sem aviso prévio.'
+            ] 
+          }
+        ]
+      },
+      privacy: {
+        title: 'Política de Privacidade',
+        sections: [
+          { 
+            title: '1. Recolha de Dados', 
+            content: [
+              'Recolhemos informações pessoais (como nome, e-mail e número de telefone) exclusivamente através dos nossos formulários de contacto quando as fornece voluntariamente.',
+              'Estes dados são utilizados apenas para responder aos seus pedidos e fornecer detalhes sobre os nossos ambientes de performance.'
+            ] 
+          },
+          { 
+            title: '2. Confidencialidade', 
+            content: [
+              'Os seus dados são tratados com absoluta confidencialidade. Não vendemos, trocamos ou transferimos as suas informações pessoalmente identificáveis para terceiros.',
+              'Implementamos medidas de segurança de ponta para manter a segurança das suas informações pessoais.'
+            ] 
+          }
+        ]
+      }
     }
   }
 };

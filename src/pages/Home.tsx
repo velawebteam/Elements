@@ -1,12 +1,21 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Wind, Sun, Maximize, Heart } from 'lucide-react';
 import { properties } from '../data/properties';
 import { useLanguage } from '../context/LanguageContext';
 
+const HERO_IMAGES = [
+  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+  "https://images.unsplash.com/photo-1613977257363-707ba9348227?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
+  "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+];
+
 export default function Home() {
   const { t } = useLanguage();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageErrorIndices, setImageErrorIndices] = useState<number[]>([]);
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -14,18 +23,47 @@ export default function Home() {
   });
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const opacityScroll = useTransform(scrollYProgress, [0, 1], [1, 0]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prev) => {
+        let nextIndex = (prev + 1) % HERO_IMAGES.length;
+        // Skip indices that have failed to load
+        while (imageErrorIndices.includes(nextIndex) && imageErrorIndices.length < HERO_IMAGES.length) {
+          nextIndex = (nextIndex + 1) % HERO_IMAGES.length;
+        }
+        return nextIndex;
+      });
+    }, 7000);
+    return () => clearInterval(timer);
+  }, [imageErrorIndices]);
+
+  const handleImageError = (index: number) => {
+    setImageErrorIndices(prev => [...prev, index]);
+    // Immediately move to next image if current one failed
+    setCurrentImageIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+  };
 
   return (
     <div className="bg-beige">
       {/* Hero Section */}
       <section ref={heroRef} className="relative h-screen overflow-hidden bg-ink">
-        <motion.div style={{ y, opacity }} className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80" 
-            alt="Luxury Architecture" 
-            className="w-full h-full object-cover opacity-60"
-          />
+        <motion.div style={{ y, opacity: opacityScroll }} className="absolute inset-0">
+          <AnimatePresence initial={false}>
+            <motion.img 
+              key={currentImageIndex}
+              src={HERO_IMAGES[currentImageIndex]} 
+              alt="Luxury Architecture" 
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 0.6, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 3, ease: [0.4, 0, 0.2, 1] }}
+              className="w-full h-full object-cover absolute inset-0"
+              referrerPolicy="no-referrer"
+              onError={() => handleImageError(currentImageIndex)}
+            />
+          </AnimatePresence>
         </motion.div>
         
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 z-10 text-white">
@@ -140,19 +178,31 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {properties.slice(0, 2).map((prop) => (
-              <Link to={`/projects/${prop.id}`} key={prop.id} className="group cursor-pointer">
-                <div className="relative aspect-[4/3] overflow-hidden mb-6">
-                  <img 
-                    src={prop.heroImage} 
-                    alt={prop.name} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="font-serif text-3xl mb-2">{prop.name}</h3>
-                <p className="text-sm tracking-widest uppercase opacity-60">{prop.location}</p>
-              </Link>
-            ))}
+            {properties.slice(0, 2).map((prop) => {
+              const projectData = t(`projects.data.${prop.id}`);
+              
+              return (
+                <Link to={`/projects/${prop.id}`} key={prop.id} className="group cursor-pointer">
+                  <div className="relative aspect-[4/3] overflow-hidden mb-6">
+                    <img 
+                      src={prop.heroImage} 
+                      alt={projectData.name || prop.name} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="font-serif text-3xl mb-2">{projectData.name || prop.name}</h3>
+                      <p className="text-sm tracking-widest uppercase opacity-60">{projectData.location || prop.location}</p>
+                    </div>
+                    <div className="text-xs tracking-widest uppercase opacity-40 text-right mt-2">
+                      <div>{prop.area} m²</div>
+                      <div>{prop.bedrooms} {t('projectDetail.form.beds') || 'Beds'}</div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
