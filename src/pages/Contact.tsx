@@ -1,8 +1,16 @@
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Contact() {
   const { t } = useLanguage();
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 5000);
+  };
 
   return (
     <div className="bg-beige min-h-screen pt-32 pb-24 px-6 md:px-12">
@@ -13,7 +21,7 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
           className="mb-20"
         >
-          <h1 className="font-serif text-5xl md:text-7xl mb-6">{t('contact.title')}</h1>
+          <h1 className="font-serif text-5xl md:text-7xl mb-6 uppercase tracking-tight">{t('contact.title')}</h1>
           <p className="text-sm tracking-widest uppercase opacity-60 max-w-md">
             {t('contact.subtitle')}
           </p>
@@ -26,47 +34,81 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <form className="space-y-12" onSubmit={(e) => e.preventDefault()}>
-              <div className="relative">
-                <input 
-                  type="text" 
-                  id="name"
-                  className="w-full bg-transparent border-b border-ink/20 py-4 focus:outline-none focus:border-ink transition-colors peer placeholder-transparent"
-                  placeholder={t('contact.form.name')}
-                />
-                <label htmlFor="name" className="absolute left-0 top-4 text-sm tracking-widest uppercase opacity-50 peer-focus:-top-4 peer-focus:text-xs transition-all peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
-                  {t('contact.form.nameLabel')}
-                </label>
-              </div>
-              
-              <div className="relative">
-                <input 
-                  type="email" 
-                  id="email"
-                  className="w-full bg-transparent border-b border-ink/20 py-4 focus:outline-none focus:border-ink transition-colors peer placeholder-transparent"
-                  placeholder={t('contact.form.email')}
-                />
-                <label htmlFor="email" className="absolute left-0 top-4 text-sm tracking-widest uppercase opacity-50 peer-focus:-top-4 peer-focus:text-xs transition-all peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
-                  {t('contact.form.emailLabel')}
-                </label>
-              </div>
+            {submitted ? (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-white p-12 text-center"
+              >
+                <h3 className="font-serif text-3xl mb-4">Thank You</h3>
+                <p className="text-sm opacity-60 uppercase tracking-widest leading-relaxed">
+                  Your message has been received.<br/>Our team will contact you shortly.
+                </p>
+              </motion.div>
+            ) : (
+              <form className="space-y-12" onSubmit={handleSubmit}>
+                <div className="relative group">
+                  <input 
+                    type="text" 
+                    id="name"
+                    required
+                    className="w-full bg-transparent border-b border-ink/20 py-4 focus:outline-none focus:border-gold transition-colors peer placeholder-transparent text-sm"
+                    placeholder={t('contact.form.name')}
+                  />
+                  <label 
+                    htmlFor="name" 
+                    className="absolute left-0 top-4 text-[10px] tracking-widest uppercase opacity-40 transition-all pointer-events-none
+                      peer-focus:-top-4 peer-focus:text-gold peer-focus:opacity-100
+                      peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:opacity-100"
+                  >
+                    {t('contact.form.nameLabel')}
+                  </label>
+                </div>
+                
+                <div className="relative group">
+                  <input 
+                    type="email" 
+                    id="email"
+                    required
+                    className="w-full bg-transparent border-b border-ink/20 py-4 focus:outline-none focus:border-gold transition-colors peer placeholder-transparent text-sm"
+                    placeholder={t('contact.form.email')}
+                  />
+                  <label 
+                    htmlFor="email" 
+                    className="absolute left-0 top-4 text-[10px] tracking-widest uppercase opacity-40 transition-all pointer-events-none
+                      peer-focus:-top-4 peer-focus:text-gold peer-focus:opacity-100
+                      peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:opacity-100"
+                  >
+                    {t('contact.form.emailLabel')}
+                  </label>
+                </div>
 
-              <div className="relative">
-                <textarea 
-                  id="message"
-                  rows={4}
-                  className="w-full bg-transparent border-b border-ink/20 py-4 focus:outline-none focus:border-ink transition-colors peer placeholder-transparent resize-none"
-                  placeholder={t('contact.form.message')}
-                ></textarea>
-                <label htmlFor="message" className="absolute left-0 top-4 text-sm tracking-widest uppercase opacity-50 peer-focus:-top-4 peer-focus:text-xs transition-all peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:text-xs">
-                  {t('contact.form.messageLabel')}
-                </label>
-              </div>
+                <div className="relative group">
+                  <textarea 
+                    id="message"
+                    rows={4}
+                    required
+                    className="w-full bg-transparent border-b border-ink/20 py-4 focus:outline-none focus:border-gold transition-colors peer placeholder-transparent resize-none text-sm"
+                    placeholder={t('contact.form.message')}
+                  ></textarea>
+                  <label 
+                    htmlFor="message" 
+                    className="absolute left-0 top-4 text-[10px] tracking-widest uppercase opacity-40 transition-all pointer-events-none
+                      peer-focus:-top-4 peer-focus:text-gold peer-focus:opacity-100
+                      peer-[:not(:placeholder-shown)]:-top-4 peer-[:not(:placeholder-shown)]:opacity-100"
+                  >
+                    {t('contact.form.messageLabel')}
+                  </label>
+                </div>
 
-              <button className="px-12 py-5 bg-ink text-beige text-sm tracking-widest uppercase hover:bg-gold hover:text-white transition-colors duration-300 w-full md:w-auto">
-                {t('contact.form.submit')}
-              </button>
-            </form>
+                <button 
+                  type="submit"
+                  className="px-16 py-5 bg-ink text-beige text-xs tracking-[0.4em] uppercase hover:bg-gold transition-all duration-500 w-full md:w-auto shadow-xl hover:shadow-2xl active:scale-[0.98]"
+                >
+                  {t('contact.form.submit')}
+                </button>
+              </form>
+            )}
           </motion.div>
 
           {/* Contact Info & Map */}

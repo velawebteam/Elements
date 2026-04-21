@@ -216,6 +216,19 @@ export const translations: Record<Language, Record<string, any>> = {
     contact: {
       title: 'Contact',
       subtitle: 'Let\'s discuss your next performance environment.',
+      form: {
+        name: 'Name',
+        nameLabel: 'Your Name',
+        email: 'Email',
+        emailLabel: 'Inquiry Email',
+        message: 'Message',
+        messageLabel: 'Your Message',
+        submit: 'Send Message',
+      },
+      info: {
+        hq: 'Headquarters',
+        direct: 'Direct Contact',
+      }
     },
     footer: {
       desc: 'Residences engineered for longevity, health, and measurable performance. Where others decorate, we design.',
@@ -469,6 +482,19 @@ export const translations: Record<Language, Record<string, any>> = {
     contact: {
       title: 'Contacto',
       subtitle: 'Vamos discutir o seu próximo ambiente de performance.',
+      form: {
+        name: 'Nome',
+        nameLabel: 'Seu Nome',
+        email: 'E-mail',
+        emailLabel: 'E-mail de Contacto',
+        message: 'Mensagem',
+        messageLabel: 'Sua Mensagem',
+        submit: 'Enviar Mensagem',
+      },
+      info: {
+        hq: 'Sede',
+        direct: 'Contacto Direto',
+      }
     },
     footer: {
       desc: 'Residências projetadas para longevidade, saúde e performance mensurável. Onde outros decoram, nós projetamos.',
